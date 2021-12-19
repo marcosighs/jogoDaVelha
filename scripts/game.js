@@ -1,16 +1,63 @@
-let board = ['', '', '', '', '', '', '', '', '']
+let board = ["", "", "", "", "", "", "", "", ""];
 let playerTime = 0;
-let symbols = ['o', 'x']
+let symbols = ["o", "x"];
+let gameOver = false;
+let players = [];
 
-function handleMove(position) {
+let winnerPositions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+];
 
-    if (board[position] == '') {
+function handleMove(position, player1, player2){
+
+    if (gameOver) {
+        winnerName(player1, player2);
+        return;
+    }
+
+    if (board[position] == "") {
         board[position] = symbols[playerTime];
 
-        if (playerTime == 0) {
-            playerTime = 1;
-        } else {
-            playerTime = 0;
+        gameOver = isWinner();
+
+        if (!gameOver){
+            playerTime = (playerTime == 0) ? 1 : 0;
         }
+        
     }
+
+    return gameOver;
+
 }
+
+function isWinner() {
+
+    for (let i=0; i < winnerPositions.length; i++) {
+        let seq = winnerPositions[i];
+        let pos0 = seq[0];
+        let pos1 = seq[1];
+        let pos2 = seq[2];
+
+        if ((board[pos0] !== "") && (board[pos0] == board[pos1]) && (board[pos1] == board[pos2])){
+            return true;
+        } 
+    
+    }
+
+    return false;
+
+}
+
+setTimeout(() =>{
+    alert("Ready to play?");
+    player1 = prompt("Player number 1, what's your name?");
+    player2 = prompt("Player number 2, what's your name?");
+    players.push(player1, player2);
+},50);
